@@ -1,6 +1,7 @@
 package com.isikef.club.service;
 
 import com.isikef.club.entities.Club;
+import com.isikef.club.exceptions.ResourceNotFound;
 import com.isikef.club.repository.ClubRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,15 +35,15 @@ public class ClubServiceImp implements IClubService {
     }
 
     @Override
-    public void deleteClub(Long id) {
+    public void deleteClub(Long id) throws ResourceNotFound {
         Club club = getClubById(id);
         clubRepository.delete(club);
     }
 
     @Override
-    public Club getClubById(long id) {
+    public Club getClubById(long id) throws ResourceNotFound {
         return clubRepository.findById(id).orElseThrow(
-                ()-> new RuntimeException("the club with id : "+id+"not found or has been deleted.")
+                ()-> new ResourceNotFound("the club with id : "+id+" not found or has been deleted.")
         );
     }
 
